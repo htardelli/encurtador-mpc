@@ -1,16 +1,13 @@
 {
-  "name": "encurtador-passagens",
+  "name": "encurtador-tinyurl",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
     "serve": "node server.js"
   },
   "dependencies": {
-    "bitly": "^7.0.0",
-    "dotenv": "^16.0.0",
-    "express": "^5.1.0",
-    "openai": "^4.0.0"
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2"
   }
 }

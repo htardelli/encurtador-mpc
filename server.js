@@ -1,38 +1,28 @@
 import 'dotenv/config';
 import express from 'express';
-import OpenAI from 'openai';
-import { BitlyClient } from 'bitly';
 
 const app = express();
 app.use(express.json());
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
-const bitly  = new BitlyClient(process.env.BITLY_TOKEN);
-
-async function shortenLink(url) {
-  const resp = await bitly.shorten(url);
-  return resp.link;
-}
-
-app.post('/shorten', async (req, res) => {
+// TinyURL free endpoint
+app.post('/shorten-tiny', async (req, res) => {
   const { url } = req.body;
   if (!url) {
     return res.status(400).json({ error: "Falta o parâmetro 'url'." });
   }
   try {
-    const shortUrl = await shortenLink(url);
+    const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`;
+    const response = await fetch(apiUrl);
+    const shortUrl = await response.text();
     return res.json({ shortUrl });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: 'Erro interno ao encurtar.' });
+    return res.status(500).json({ error: 'Erro interno no TinyURL.' });
   }
 });
 
-app.get('/health', (_req, res) => {
-  res.send('OK');
-});
+// Health check
+app.get('/health', (_req, res) => res.send('OK'));
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🔗 Service listening on port ${PORT}`);
-});
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`🔗 TinyURL service on port ${PORT}`));
