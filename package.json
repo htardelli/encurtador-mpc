@@ -1,5 +1,5 @@
 {
-  "name": "encurtador-tinyurl",
+  "name": "encurtador-mpc",
   "version": "1.0.0",
   "type": "module",
   "main": "server.js",
